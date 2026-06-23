@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LztZHbesmNU=",
+  "dgSpecHash": "32XgH5xFpLk=",
   "success": true,
-  "projectFilePath": "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
+  "projectFilePath": "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\yodag\\.nuget\\packages\\archipelago.core\\2.0.1\\archipelago.core.2.0.1.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\archipelago.core.avaloniagui\\1.0.0\\archipelago.core.avaloniagui.1.0.0.nupkg.sha512",
@@ -18,7 +18,6 @@
     "C:\\Users\\yodag\\.nuget\\packages\\microcom.runtime\\0.11.0\\microcom.runtime.0.11.0.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\microsoft.dotnet.platformabstractions\\3.1.6\\microsoft.dotnet.platformabstractions.3.1.6.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\microsoft.extensions.dependencymodel\\8.0.0\\microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512",
-    "C:\\Users\\yodag\\.nuget\\packages\\microsoft.net.illink.tasks\\10.0.5\\microsoft.net.illink.tasks.10.0.5.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.2\\microsoft.win32.systemevents.9.0.2.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\reactiveui\\18.3.1\\reactiveui.18.3.1.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
@@ -37,10 +36,7 @@
     "C:\\Users\\yodag\\.nuget\\packages\\splat\\14.4.1\\splat.14.4.1.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\system.drawing.common\\9.0.2\\system.drawing.common.9.0.2.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg.sha512",
-    "C:\\Users\\yodag\\.nuget\\packages\\ultz.native.glfw\\3.4.0\\ultz.native.glfw.3.4.0.nupkg.sha512",
-    "C:\\Users\\yodag\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\10.0.5\\microsoft.netcore.app.runtime.win-x64.10.0.5.nupkg.sha512",
-    "C:\\Users\\yodag\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\10.0.5\\microsoft.windowsdesktop.app.runtime.win-x64.10.0.5.nupkg.sha512",
-    "C:\\Users\\yodag\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\10.0.5\\microsoft.aspnetcore.app.runtime.win-x64.10.0.5.nupkg.sha512"
+    "C:\\Users\\yodag\\.nuget\\packages\\ultz.native.glfw\\3.4.0\\ultz.native.glfw.3.4.0.nupkg.sha512"
   ],
   "logs": []
 }
