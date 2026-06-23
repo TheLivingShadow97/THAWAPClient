@@ -141,7 +141,7 @@ public partial class App : Application
                 {
                     Client.IntializeOverlayService(new WindowsOverlayService(new OverlayOptions()
                     {
-                        YOffset = 250 // later, set this dynamically based on "UI scale" DSR option
+                        YOffset = 250 // later, set this dynamically based on "UI scale" option
                     }));
                 }
                 else // otherwise set a task to poll it until it's enabled.
