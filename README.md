@@ -7,7 +7,7 @@ Archipelago Client for Tony Hawk's American Wasteland (USA) (Collector's Edition
 [Required Software](#Required-Software)  
 [Setup](#Setup)   
 [Roadmap](#Roadmap)  
-[Special Thanks](#Special-Thanks)
+[Special Thanks](#Special-Thanks)  
 [Changelog](#Changelog)  
 
 # Required Software
