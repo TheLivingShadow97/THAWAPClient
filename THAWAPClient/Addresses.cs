@@ -17,12 +17,13 @@ namespace THAWAPClient
 
         //Gap Start Addresses
         public static ulong HWGapStart = 0xd240b8;
+        public static ulong BHGapStart = 0xd240bc;
 
         //Shop Address Pointer
         public static ulong ShopStartAddress = 0x5aba4c; 
 
         //Bus Unlocks
-        public static ulong BeverlyHills = 0x9ae398;
+        public static ulong BeverlyHills = 0x9ae418;
         public static ulong SkateRanch = 0x9ae718;
         public static ulong Downtown = 0x9ae498;
         public static ulong VansPark = 0x9aeb18;

@@ -5,190 +5,69 @@ using Archipelago.Core.Models;
 namespace THAWAPClient.Models
 {
     public class ShopLocationReading
-    {
+    {   
+        public static void AddShopLocations(List<ILocation> locations, Dictionary<string, uint> items, int baseId, string _Category)
+        {
+            int index = 0;
+
+            foreach (var (itemName, offset) in items)
+            {
+                locations.Add(new Location
+                {
+                    Id = baseId + ++index,
+                    Name = itemName,
+                    Address = GetShopAddress(offset),
+                    CheckType = LocationCheckType.UInt,
+                    CheckValue = "1",
+                    CompareType = LocationCheckCompareType.Match,
+                    Category = _Category
+                });
+            }
+        }
+
         public static List<ILocation> GetHollywoodShopLocations()
         {
             var locations = new List<ILocation>();
-            int shirtindex = 0;
-            int pantsindex = 0;
-            int decksindex = 0;
-            int griptapeindex = 0;
-            int elbowpadsindex = 0;
-            int kneepadsindex = 0;
-            int shoesindex = 0;
-            int socksindex = 0;
-            int hairindex = 0;
 
-            foreach (var shirt in hwShirts)
-            {
-                string itemName = shirt.Key;
-                uint offset = shirt.Value;
-                shirtindex++;
-                int baseId = 10310000;
+            AddShopLocations(locations, hwShirts,     10310000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwPants,      10320000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwDecks,      10330000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwGripTapes,  10340000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwElbowPads,  10350000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwKneePads,   10360000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwShoes,      10370000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwSocks,      10380000, "Hollywood Shop Locations");
+            AddShopLocations(locations, hwHair,       10390000, "Hollywood Shop Locations");
+            
+            return locations;
+        }
 
-                locations.Add(new Location
+        public static List<ILocation> GetBeverlyHillsShopLocations()
+        {
+            var locations = new List<ILocation>();
+
+            AddShopLocations(locations, bhShirts,     20310000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhPants,      20320000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhDecks,      20330000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhGripTapes,  20340000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhShoes,      20350000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhLeftAccessories,       20360000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhRightAccessories,      20370000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhGloves,      20380000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhBackpacks,      20390000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhHats,      20391000, "Beverly Hills Shop Locations");
+            AddShopLocations(locations, bhGlasses,      20392000, "Beverly Hills Shop Locations");
+
+            locations.Add(new Location
                 {
-                    Id = baseId + shirtindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
+                    Id = 20310030,
+                    Name = "BH Shirt: Panda Suit",
+                    Address = 0x9AF753,
+                    CheckType = LocationCheckType.Bit,
+                    AddressBit = 3,
+                    Category = "Beverly Hills Shop Locations"
                 });
-            }
 
-            foreach (var pants in hwPants)
-            {
-                string itemName = pants.Key;
-                uint offset = pants.Value;
-                pantsindex++;
-                int baseId = 10320000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + pantsindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var deck in hwDecks)
-            {
-                string itemName = deck.Key;
-                uint offset = deck.Value;
-                decksindex++;
-                int baseId = 10330000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + decksindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var griptape in hwGripTapes)
-            {
-                string itemName = griptape.Key;
-                uint offset = griptape.Value;
-                griptapeindex++;
-                int baseId = 10340000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + griptapeindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var elbowpads in hwElbowPads)
-            {
-                string itemName = elbowpads.Key;
-                uint offset = elbowpads.Value;
-                elbowpadsindex++;
-                int baseId = 10350000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + elbowpadsindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var kneepads in hwKneePads)
-            {
-                string itemName = kneepads.Key;
-                uint offset = kneepads.Value;
-                kneepadsindex++;
-                int baseId = 10360000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + kneepadsindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var shoes in hwShoes)
-            {
-                string itemName = shoes.Key;
-                uint offset = shoes.Value;
-                shoesindex++;
-                int baseId = 10370000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + shoesindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var socks in hwSocks)
-            {
-                string itemName = socks.Key;
-                uint offset = socks.Value;
-                socksindex++;
-                int baseId = 10380000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + socksindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
-
-            foreach (var hair in hwHair)
-            {
-                string itemName = hair.Key;
-                uint offset = hair.Value;
-                hairindex++;
-                int baseId = 10390000;
-
-                locations.Add(new Location
-                {
-                    Id = baseId + hairindex,
-                    Name = itemName,
-                    Address = GetShopAddress(offset),
-                    CheckType = LocationCheckType.UInt,
-                    CheckValue = "1",
-                    CompareType = LocationCheckCompareType.Match,
-                    Category = "Hollywood Shop Items"
-                });
-            }
 
             return locations;
         }
@@ -274,7 +153,7 @@ namespace THAWAPClient.Models
             { "HW Deck: Plan B Team 3-D", 0x54c},
             { "HW Deck: Powell Peralta Cab", 0x560},
             { "HW Deck: Powell Peralta Mullen", 0x574},
-            { "HW Deck: RDS1", 0x578},
+            { "HW Deck: RDS 1", 0x578},
             { "HW Deck: The Firm Bobs Stencil", 0x5a8},
             { "HW Deck: World Industries 1", 0x588},
         };
@@ -331,7 +210,7 @@ namespace THAWAPClient.Models
             { "HW Shoes: ES Accelerate", 0x6ac},
             { "HW Shoes: Emerica Crass", 0x6b0},
             { "HW Shoes: Emerica Felt", 0x6b4},
-            { "HW Shoes: Emerica ReynoldS3", 0x6b8},
+            { "HW Shoes: Emerica Reynolds 3", 0x6b8},
             { "HW Shoes: Etnies Bastien", 0x6c0},
             { "HW Shoes: Etnies Arto", 0x6c4},
             { "HW Shoes: Etnies Lo-cal", 0x6c8},
@@ -382,6 +261,191 @@ namespace THAWAPClient.Models
             { "HW Hair: Cornrows", 0xbc},
             { "HW Hair: Medium", 0xc0},
             { "HW Hair: Short", 0xc4}
+        };
+    
+        public static Dictionary<string, uint> bhShirts = new()
+        {
+            { "BH Shirt: Ringer T", 0xdc},
+            { "BH Shirt: Polo Shirt", 0xe8},
+            { "BH Shirt: Baseball 1", 0xf4},
+            { "BH Shirt: Sports Coat", 0x104},
+            { "BH Shirt: Dress Beater", 0x108},
+            { "BH Shirt: Dress Shirt T", 0x10c},
+            { "BH Shirt: Denim Jacket", 0x130},
+            { "BH Shirt: Track Jacket", 0x138},
+            { "BH Shirt: Basketball Jersey", 0x250},
+            { "BH Shirt: Hawaiian", 0x140},
+            { "BH Shirt: Vans Birdseye", 0x150},
+            { "BH Shirt: Hawk Brigade", 0x164},
+            { "BH Shirt: Hawk Rocker", 0x16c},
+            { "BH Shirt: Quiksilver Striped", 0x170},
+            { "BH Shirt: Quiksilver Hoody 2", 0x180},
+            { "BH Shirt: Hurley Biker Jacket", 0x188},
+            { "BH Shirt: Hurley Polo", 0x18c},
+            { "BH Shirt: DC Stence Tank", 0x254},
+            { "BH Shirt: Element Baroque", 0x19c},
+            { "BH Shirt: Element Addict", 0x1a4},
+            { "BH Shirt: Element Ardent", 0x1a8},
+            { "BH Shirt: Electric Hoody", 0x1b8},
+            { "BH Shirt: Nixon Shirt 1", 0x1e0},
+            { "BH Shirt: Birdhouse Shirt 1", 0x1e8},
+            { "BH Shirt: Alva OG Shirt", 0x1f8},
+            { "BH Shirt: Von Zipper Shirt 1", 0x208},
+            { "BH Shirt: Volcom Houston", 0x230},
+            { "BH Shirt: Free Agent Shirt 1", 0x248},
+            { "BH Shirt: Globe Quaranteen T", 0x260},
+        };
+
+        public static Dictionary<string, uint> bhPants = new()
+        {
+            { "BH Pants: Khaki Pants", 0x274 },
+            { "BH Pants: Board Shorts", 0x288 },
+            { "BH Pants: Short Shorts", 0x28c },
+        };
+
+        public static Dictionary<string, uint> bhDecks = new()
+        {
+            { "BH Deck: Almost Sheckler Hate", 0x45c },
+            { "BH Deck: Alva Cross", 0x474 },
+            { "BH Deck: Alva Ocean Size", 0x488 },
+            { "BH Deck: Birdhouse Dragon Skull", 0x4b0 },
+            { "BH Deck: Birdhouse Giant Black", 0x4c4 },
+            { "BH Deck: Blind Reaper", 0x4dc },
+            { "BH Deck: 5Boro Script Logo", 0x4e8 },
+            { "BH Deck: DGK Logo", 0x4f0 },
+            { "BH Deck: Element Bam Margera Big Series", 0x504 },
+            { "BH Deck: Element Elemental Seal", 0x518 },
+            { "BH Deck: Blind Chainsaw Kitten", 0x538 },
+            { "BH Deck: Plan B Team Bow Wow", 0x550 },
+            { "BH Deck: Powell Peralta Hawk", 0x564 },
+            { "BH Deck: RDS 2", 0x57c },
+            { "BH Deck: World Industries 2", 0x58c },
+        };
+
+        public static Dictionary<string, uint> bhGripTapes = new()
+        {
+            { "BH Grip Tape: Striper", 0x5d4 },
+            { "BH Grip Tape: Thrashed", 0x5d8 },
+            { "BH Grip Tape: Colored Nuts", 0x5dc },
+            { "BH Grip Tape: Green Machine", 0x5e0 },
+            { "BH Grip Tape: Blues", 0x5e4 },
+            { "BH Grip Tape: Red Light", 0x5e8 },
+            { "BH Grip Tape: Crack", 0x5ec },
+            { "BH Grip Tape: Eye Don't Know", 0x5f0 },
+            { "BH Grip Tape: NS Single Eye", 0x5f4 },
+            { "BH Grip Tape: The Bat", 0x5f8 },
+            { "BH Grip Tape: Right Thrashed", 0x5fc },
+            { "BH Grip Tape: Mullen", 0x608 },
+            { "BH Grip Tape: Sheckler", 0x610 },
+        };
+
+        public static Dictionary<string, uint> bhShoes = new()
+        {
+            { "BH Shoes: Vans Tony III", 0x6a0 },
+            { "BH Shoes: Emerica Reynolds 2", 0x6bc },
+        };
+
+        public static Dictionary<string, uint> bhLeftAccessories = new()
+        {
+            { "BH Left Accessory: Wrist Band A", 0x3e4 },
+            { "BH Left Accessory: Watch A", 0x3e8 },
+            { "BH Left Accessory: Baker Die-Cut", 0x3ec },
+            { "BH Left Accessory: DGK Baller Band", 0x3f0 },
+            { "BH Left Accessory: Nixon Player", 0x3f4 },
+            { "BH Left Accessory: Nixon Dork", 0x3f8 },
+            { "BH Left Accessory: Nixon Special Ops", 0x3fc },
+            { "BH Left Accessory: Nixon Rocker", 0x400 },
+            { "BH Left Accessory: Nixon Band", 0x404 },
+            { "BH Left Accessory: Quiksilver Watch", 0x408 },
+            { "BH Left Accessory: Wristguard", 0x40c },
+            { "BH Left Accessory: Spikes", 0x410 },
+        };
+
+        public static Dictionary<string, uint> bhRightAccessories = new()
+        {
+            { "BH Right Accessory: Wrist Band A", 0x41c },
+            { "BH Right Accessory: Watch A", 0x420 },
+            { "BH Right Accessory: Baker Die-Cut", 0x424 },
+            { "BH Right Accessory: DGK Baller Band", 0x428 },
+            { "BH Right Accessory: Nixon Player", 0x42c },
+            { "BH Right Accessory: Nixon Dork", 0x430 },
+            { "BH Right Accessory: Nixon Special Ops", 0x434 },
+            { "BH Right Accessory: Nixon Rocker", 0x438 },
+            { "BH Right Accessory: Nixon Band", 0x43c },
+            { "BH Right Accessory: Quiksilver Watch", 0x440 },
+            { "BH Right Accessory: Wristguard", 0x444 },
+            { "BH Right Accessory: Spikes", 0x448 },
+        };
+
+        public static Dictionary<string, uint> bhGloves = new()
+        {
+            { "BH Gloves: Glove 1", 0x2c4 },
+            { "BH Gloves: Glove 2", 0x2c8 },
+        };
+
+        public static Dictionary<string, uint> bhBackpacks = new()
+        {
+            { "BH Backpack: Backpack A", 0x2b4 },
+            { "BH Backpack: Backpack B", 0x2b8 },
+            { "BH Backpack: Messenger Bag", 0x2bc },
+            { "BH Backpack: Backpack Paint", 0x2c0 },
+        };
+
+        public static Dictionary<string, uint> bhHats = new()
+        {
+            { "BH Hats: Flatbilled Cap", 0x2f4 },
+            { "BH Hats: Baseball Cap", 0x2f8 },
+            { "BH Hats: Cap Backwards", 0x2fc },
+            { "BH Hats: Upturned Bill", 0x300 },
+            { "BH Hats: Trucker Hat", 0x304 },
+            { "BH Hats: Trucker Backwards", 0x308 },
+            { "BH Hats: Brimmed Beanie", 0x310 },
+            { "BH Hats: Headband", 0x318 },
+            { "BH Hats: Visor", 0x328 },
+            { "BH Hats: Baker Hanoi A", 0x358 },
+            { "BH Hats: Baker Hanoi B", 0x35c },
+            { "BH Hats: Hurley Rude Boy", 0x364 },
+            { "BH Hats: DGK Headband", 0x368 },
+            { "BH Hats: DGK Cap 1", 0x36c },
+            { "BH Hats: DGK Cap 2", 0x370 },
+            { "BH Hats: DVS Trucker", 0x374 },
+            { "BH Hats: Electric Cap", 0x378 },
+            { "BH Hats: Pro-Tec Hassan", 0x380 },
+            { "BH Hats: Pro-Tec Lasek", 0x384 },
+            { "BH Hats: Pro-Tec Caballero", 0x388 },
+            { "BH Hats: Nixon Cap", 0x398 },
+            { "BH Hats: Quiksilver Cap 1", 0x39c },
+            { "BH Hats: Quiksilver Cap 2", 0x3a0 },
+            { "BH Hats: Birdhouse Cap 1", 0x3a4 },
+            { "BH Hats: Birdhouse Cap 2", 0x3a8 },
+            { "BH Hats: Alva Scratch Cap", 0x3ac },
+            { "BH Hats: Zumiez Cap", 0x3b0 },
+            { "BH Hats: Indy Red/White Cross", 0x3b4 },
+            { "BH Hats: Plan B Cap 1", 0x3b8 },
+            { "BH Hats: Plan B Cap 2", 0x3bc },
+            { "BH Hats: Sessions Kimballotta Cap", 0x3c0 },
+            { "BH Hats: RDS Cap", 0x3c4 },
+            { "BH Hats: Nike Cap", 0x3c8 },
+            { "BH Hats: Volcom Premium Cheese", 0x3cc },
+            { "BH Hats: Volcom Cap", 0x3d0 },
+            { "BH Hats: Famous Stars and Straps Headband", 0x3d4 },
+            { "BH Hats: Free Agent Beanie", 0x3d8 },
+            { "BH Hats: Free Agent Trucker", 0x3dc },
+            { "BH Hats: Globe Colab", 0x3e0 },
+        };
+
+        public static Dictionary<string, uint> bhGlasses = new()
+        {
+            { "BH Glasses: Aviator", 0x2cc },
+            { "BH Glasses: Electric BSG", 0x2d0 },
+            { "BH Glasses: Arnette 1", 0x2d4 },
+            { "BH Glasses: Arnette 2", 0x2d8 },
+            { "BH Glasses: Arnette 3", 0x2dc },
+            { "BH Glasses: Arnette 4", 0x2e0 },
+            { "BH Glasses: Von Zipper Papa G", 0x2e4 },
+            { "BH Glasses: Von Zipper Rockford", 0x2e8 },
+            { "BH Glasses: Von Zipper Brooklyn", 0x2ec },
+            { "BH Glasses: Von Zipper Skitch", 0x2f0 },
         };
     }
 }

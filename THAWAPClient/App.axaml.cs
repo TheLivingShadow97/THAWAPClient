@@ -35,6 +35,7 @@ public partial class App : Application
     public static ArchipelagoClient Client { get; set; }
     private bool overlayInitialized = false;
     private static readonly object _lockObject = new object();
+    public static int Goal { get; set; }
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -112,6 +113,10 @@ public partial class App : Application
         Client.ItemManager.ItemReceived += Client_ItemReceived;
         await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         Client.LocationManager.LocationCompleted += Client_LocationCompleted;
+        if (Client.Options?.Count > 0)
+        {
+            Goal = int.Parse(Client.Options?.GetValueOrDefault("end_goal", "0").ToString());
+        }
 
         PlayerState.UpdateSkater(Client);
         PlayerState.StartFixLoop();
@@ -185,7 +190,12 @@ public partial class App : Application
     {  List<ILocation> listofalllocations = new List<ILocation>();
        listofalllocations.AddRange(GapLocationReading.GetHollywoodGapData());
        listofalllocations.AddRange(ShopLocationReading.GetHollywoodShopLocations());
-       
+       if (Goal >= 1)
+       {
+        listofalllocations.AddRange(GapLocationReading.GetBeverlyHillsGapData());
+        listofalllocations.AddRange(ShopLocationReading.GetBeverlyHillsShopLocations());
+        listofalllocations.AddRange(MiscLocationReading.AddMiscBHLocations());
+       }
        return listofalllocations;
     }
     
@@ -362,6 +372,10 @@ public partial class App : Application
                     PlayerState.HasBonedOllie = 1;
                     success = true;
                     break;
+                case "Bus Access: Beverly Hills":
+                    Memory.WriteBit(Addresses.BeverlyHills, 6, true);
+                    success = true;
+                    break;
             }
 
             Log.Logger.Information($"Received {e.Item.Name} ({e.Item.Id})");
@@ -420,20 +434,38 @@ public partial class App : Application
     }
 
     private static void Client_LocationCompleted(object? sender, Archipelago.Core.Models.LocationCompletedEventArgs e)
-    {
-        var locid = e.CompletedLocation.Id;
-        if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
+    {   
+        if (Goal < 1)
         {
-            Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-            GoalTracking.SendGoal(Client);
+                var locid = e.CompletedLocation.Id;
+            if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
+            {
+                Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+                GoalTracking.SendGoal(Client);
+            }
+            else if (locid == 10100008) // get into BH location
+            {
+                Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+                GoalTracking.SendGoal(Client);
+            }
+            else
+            {}
         }
-        else if (locid == 10100008) // get into BH location
+        else if (Goal >= 1)
         {
-            Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-            GoalTracking.SendGoal(Client);
+                var locid = e.CompletedLocation.Id;
+            if (e.CompletedLocation.Name.Contains("Visit the Skate Ranch"))
+            {
+                Log.Logger.Information($"Sending Goal for location: Get to the Skate Ranch");
+                GoalTracking.SendGoal(Client);
+            }
+            else if (locid == 20000002) // get into skate ranch location
+            {
+                Log.Logger.Information($"Sending Goal for location: Get to the Skate Ranch");
+                GoalTracking.SendGoal(Client);
+            }
         }
-        else
-        {}
+
     }
 
     public void Context_CommandReceived(object? sender, ArchipelagoCommandEventArgs a)

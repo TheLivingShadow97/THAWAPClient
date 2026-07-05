@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "32XgH5xFpLk=",
+  "dgSpecHash": "f8sMnFw2FX8=",
   "success": true,
-  "projectFilePath": "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
+  "projectFilePath": "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\yodag\\.nuget\\packages\\archipelago.core\\2.0.1\\archipelago.core.2.0.1.nupkg.sha512",
     "C:\\Users\\yodag\\.nuget\\packages\\archipelago.core.avaloniagui\\1.0.0\\archipelago.core.avaloniagui.1.0.0.nupkg.sha512",

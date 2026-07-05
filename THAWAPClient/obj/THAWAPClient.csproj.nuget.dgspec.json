@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj": {}
+    "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj": {}
   },
   "projects": {
-    "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj": {
+    "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
+        "projectUniqueName": "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
         "projectName": "THAWAPClient",
-        "projectPath": "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
+        "projectPath": "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\THAWAPClient.csproj",
         "packagesPath": "C:\\Users\\yodag\\.nuget\\packages\\",
-        "outputPath": "d:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\obj\\",
+        "outputPath": "D:\\Dev Stuff\\thaw\\THAW AP Client\\THAWAPClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\yodag\\AppData\\Roaming\\NuGet\\NuGet.Config",
