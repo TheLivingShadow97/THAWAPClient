@@ -36,6 +36,7 @@ public partial class App : Application
     private bool overlayInitialized = false;
     private static readonly object _lockObject = new object();
     public static int Goal { get; set; }
+    public static TonyHawkOptions THAWOptions;
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -113,13 +114,14 @@ public partial class App : Application
         Client.ItemManager.ItemReceived += Client_ItemReceived;
         await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         Client.LocationManager.LocationCompleted += Client_LocationCompleted;
-        if (Client.Options?.Count > 0)
-        {
-            Goal = int.Parse(Client.Options?.GetValueOrDefault("end_goal", "0").ToString());
-        }
+        //if (Client.Options?.Count > 0)
+        //{
+        //    Goal = int.Parse(Client.Options?.GetValueOrDefault("end_goal", "0").ToString());
+        //}
 
         PlayerState.UpdateSkater(Client);
         PlayerState.StartFixLoop();
+        TrickCashing.StartTrickCashLoop();
         await SetupLocationMonitoring(Client);
     }
     private async void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
@@ -182,6 +184,8 @@ public partial class App : Application
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
         MissionHandling.StartMissionFinderLoop(Client);
+        if (THAWOptions.ChosenGoal == 1)
+            {GapLocationReading.StartGapLocationInitializationLoop(Client);}
         //GoalTracking.DeriveGoal(Client);
         //GoalTracking.StartGoalFinderLoop(Client);
     }
@@ -190,12 +194,12 @@ public partial class App : Application
     {  List<ILocation> listofalllocations = new List<ILocation>();
        listofalllocations.AddRange(GapLocationReading.GetHollywoodGapData());
        listofalllocations.AddRange(ShopLocationReading.GetHollywoodShopLocations());
-       if (Goal >= 1)
-       {
-        listofalllocations.AddRange(GapLocationReading.GetBeverlyHillsGapData());
+       //if (Goal >= 1)
+       //{
+        //listofalllocations.AddRange(GapLocationReading.GetBeverlyHillsGapData());
         listofalllocations.AddRange(ShopLocationReading.GetBeverlyHillsShopLocations());
         listofalllocations.AddRange(MiscLocationReading.AddMiscBHLocations());
-       }
+       //}
        return listofalllocations;
     }
     
@@ -435,24 +439,24 @@ public partial class App : Application
 
     private static void Client_LocationCompleted(object? sender, Archipelago.Core.Models.LocationCompletedEventArgs e)
     {   
-        if (Goal < 1)
-        {
-                var locid = e.CompletedLocation.Id;
-            if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
-            {
-                Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-                GoalTracking.SendGoal(Client);
-            }
-            else if (locid == 10100008) // get into BH location
-            {
-                Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-                GoalTracking.SendGoal(Client);
-            }
-            else
-            {}
-        }
-        else if (Goal >= 1)
-        {
+        // if (Goal < 1)
+        // {
+        //         var locid = e.CompletedLocation.Id;
+        //     if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
+        //     {
+        //         Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+        //         GoalTracking.SendGoal(Client);
+        //     }
+        //     else if (locid == 10100008) // get into BH location
+        //     {
+        //         Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+        //         GoalTracking.SendGoal(Client);
+        //     }
+        //     else
+        //     {}
+        // }
+        //else if (Goal >= 1)
+        //{
                 var locid = e.CompletedLocation.Id;
             if (e.CompletedLocation.Name.Contains("Visit the Skate Ranch"))
             {
@@ -464,7 +468,7 @@ public partial class App : Application
                 Log.Logger.Information($"Sending Goal for location: Get to the Skate Ranch");
                 GoalTracking.SendGoal(Client);
             }
-        }
+        //}
 
     }
 
@@ -480,6 +484,7 @@ public partial class App : Application
             Log.Logger.Warning(" /help - Display this menu.");
             Log.Logger.Warning(" /currentstats - Prints out your current stats given by archipelago.");
             Log.Logger.Warning(" /readhwgapX - Checks the associated Hollywood gap (where X is the gap index number) to make sure its reading correctly.");
+            Log.Logger.Warning(" /emergencygoalsend - Completes your slot and sends your goal for emergency purposes.");
             Log.Logger.Warning("--- End of THAWAP commands. ---");
             Client?.SendMessage(a.Command); /* send original command through client for the rest of /help - maybe player will have something if they are an admin. */
         }
@@ -494,6 +499,10 @@ public partial class App : Application
             int result = Memory.ReadInt(gapaddress);
             Log.Logger.Warning("That gap reads as " + result.ToString());
 
+        }
+        else if (command.StartsWith("/emergencygoalsend"))
+        {
+            GoalTracking.SendGoal(Client);
         }
     }
 
@@ -548,6 +557,13 @@ public partial class App : Application
     {
         Log.Logger.Information("Connected to Archipelago");
         Log.Logger.Information($"Playing {Client.CurrentSession.ConnectionInfo.Game} as {Client.CurrentSession.Players.GetPlayerName(Client.CurrentSession.ConnectionInfo.Slot)}");
+        int currentSlot = App.Client.CurrentSession.ConnectionInfo.Slot;
+        var slotDataTask = App.Client.CurrentSession.DataStorage.GetSlotDataAsync(currentSlot);
+        slotDataTask.Wait();
+        Dictionary<string, object> slotData = slotDataTask.Result;
+
+        THAWOptions = new TonyHawkOptions(App.Client.Options, slotData);
+        Log.Logger.Information($"Current goal is {THAWOptions.ChosenGoal.ToString()}");
     }
 
     private static void OnDisconnected(object sender, EventArgs args)

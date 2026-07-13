@@ -10,9 +10,9 @@ namespace THAWAPClient.Helpers
                 return true;
             return false;
         }
-        public static uint GetCurrentLevel()
+        public static int GetCurrentLevel()
         {
-            uint tempcurrentlevel = Memory.ReadUInt(Addresses.CurrentLevel);
+            int tempcurrentlevel = Memory.ReadInt(Addresses.CurrentLevel);
             return tempcurrentlevel;
         }
 

@@ -12,3 +12,4 @@ D:\Dev Stuff\thaw\THAW AP Client\THAWAPClient\obj\Release\net10.0\Avalonia\THAWA
 D:\Dev Stuff\thaw\THAW AP Client\THAWAPClient\obj\Release\net10.0\Avalonia\THAWAPClient.pdb
 D:\Dev Stuff\thaw\THAW AP Client\THAWAPClient\obj\Release\net10.0\refint\Avalonia\THAWAPClient.dll
 D:\Dev Stuff\thaw\THAW AP Client\THAWAPClient\obj\Release\net10.0\ref\THAWAPClient.dll
+D:\Dev Stuff\thaw\THAW AP Client\THAWAPClient\obj\Release\net10.0\THAWAPClient.sourcelink.json

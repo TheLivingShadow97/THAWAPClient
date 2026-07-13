@@ -14,6 +14,7 @@ namespace THAWAPClient
         public static ulong CurrentCash = 0xd24294;
         public static ulong CurrentLevel = 0xd240b0;
         public static ulong InGameTime = 0xd55644;
+        public static ulong TopLeftScore = 0x716830;
 
         //Gap Start Addresses
         public static ulong HWGapStart = 0xd240b8;

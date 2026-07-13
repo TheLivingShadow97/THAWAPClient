@@ -1,11 +1,65 @@
 using Archipelago.Core.Util;
 using Archipelago.Core.Models;
+using THAWAPClient.Helpers;
+using Archipelago.Core;
+using Serilog;
 
 
 namespace THAWAPClient.Models
 {
     public class GapLocationReading
     {   
+        private static CancellationTokenSource? _cts4gr;
+
+        public static void StartGapLocationInitializationLoop(ArchipelagoClient Client)
+        {
+            if (_cts4gr != null)
+                return; // already running
+
+            _cts4gr = new CancellationTokenSource();
+            _ = StartGapLocationInitializationLoopAsync(_cts4gr.Token, Client);
+        }
+
+        public static void StopGapLocationInitializationLoop()
+        {
+            _cts4gr?.Cancel();
+            _cts4gr = null;
+        }
+
+        public static async Task StartGapLocationInitializationLoopAsync(CancellationToken token, ArchipelagoClient Client)
+        {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await EvaluateInitializationAsync(Client);
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Expected when stopping — no action needed
+            }
+        }
+
+        public static async Task EvaluateInitializationAsync(ArchipelagoClient Client)
+        {   if (!LevelID.IsInGame())
+                {return;}
+            int currentlevel = LevelID.GetCurrentLevel();
+            if (currentlevel == 2)
+            {
+                var BeverlyHillsGaps = GetBeverlyHillsGapData();
+                foreach (var loc in BeverlyHillsGaps)
+                    {
+                        Client.LocationManager.AddLocation(loc);
+                    }
+                Log.Logger.Information("Beverly Hills Gap Locations Added");
+                StopGapLocationInitializationLoop();
+            };
+        }
+    
+
         public static List<ILocation> GetBeverlyHillsGapData()
         {
             var locations = new List<ILocation>();
