@@ -184,7 +184,7 @@ public partial class App : Application
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
         MissionHandling.StartMissionFinderLoop(Client);
-        if (THAWOptions.ChosenGoal == 1)
+        if (THAWOptions.ChosenGoal >= 1)
             {GapLocationReading.StartGapLocationInitializationLoop(Client);}
         //GoalTracking.DeriveGoal(Client);
         //GoalTracking.StartGoalFinderLoop(Client);
@@ -194,12 +194,11 @@ public partial class App : Application
     {  List<ILocation> listofalllocations = new List<ILocation>();
        listofalllocations.AddRange(GapLocationReading.GetHollywoodGapData());
        listofalllocations.AddRange(ShopLocationReading.GetHollywoodShopLocations());
-       //if (Goal >= 1)
-       //{
-        //listofalllocations.AddRange(GapLocationReading.GetBeverlyHillsGapData());
+       if (THAWOptions.ChosenGoal >= 1)
+       {
         listofalllocations.AddRange(ShopLocationReading.GetBeverlyHillsShopLocations());
         listofalllocations.AddRange(MiscLocationReading.AddMiscBHLocations());
-       //}
+       }
        return listofalllocations;
     }
     
@@ -439,24 +438,24 @@ public partial class App : Application
 
     private static void Client_LocationCompleted(object? sender, Archipelago.Core.Models.LocationCompletedEventArgs e)
     {   
-        // if (Goal < 1)
-        // {
-        //         var locid = e.CompletedLocation.Id;
-        //     if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
-        //     {
-        //         Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-        //         GoalTracking.SendGoal(Client);
-        //     }
-        //     else if (locid == 10100008) // get into BH location
-        //     {
-        //         Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
-        //         GoalTracking.SendGoal(Client);
-        //     }
-        //     else
-        //     {}
-        // }
-        //else if (Goal >= 1)
-        //{
+        if (THAWOptions.ChosenGoal < 1)
+        {
+                var locid = e.CompletedLocation.Id;
+            if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
+            {
+                Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+                GoalTracking.SendGoal(Client);
+            }
+            else if (locid == 10100008) // get into BH location
+            {
+            Log.Logger.Information($"Sending Goal for location: Smash the T-Rex");
+                GoalTracking.SendGoal(Client);
+            }
+            else
+            {}
+        }
+        else if (THAWOptions.ChosenGoal == 1)
+        {
                 var locid = e.CompletedLocation.Id;
             if (e.CompletedLocation.Name.Contains("Visit the Skate Ranch"))
             {
@@ -468,7 +467,7 @@ public partial class App : Application
                 Log.Logger.Information($"Sending Goal for location: Get to the Skate Ranch");
                 GoalTracking.SendGoal(Client);
             }
-        //}
+        }
 
     }
 
