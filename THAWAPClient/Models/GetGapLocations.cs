@@ -49,6 +49,7 @@ namespace THAWAPClient.Models
             int currentlevel = LevelID.GetCurrentLevel();
             if (currentlevel == 2)
             {
+                await Task.Delay(TimeSpan.FromSeconds(5));
                 var BeverlyHillsGaps = GetBeverlyHillsGapData();
                 foreach (var loc in BeverlyHillsGaps)
                     {

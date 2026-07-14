@@ -114,14 +114,11 @@ public partial class App : Application
         Client.ItemManager.ItemReceived += Client_ItemReceived;
         await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         Client.LocationManager.LocationCompleted += Client_LocationCompleted;
-        //if (Client.Options?.Count > 0)
-        //{
-        //    Goal = int.Parse(Client.Options?.GetValueOrDefault("end_goal", "0").ToString());
-        //}
 
         PlayerState.UpdateSkater(Client);
         PlayerState.StartFixLoop();
-        TrickCashing.StartTrickCashLoop();
+        if (THAWOptions.TrickCashing == true)
+            {TrickCashing.StartTrickCashLoop();}
         await SetupLocationMonitoring(Client);
     }
     private async void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
@@ -187,7 +184,7 @@ public partial class App : Application
         if (THAWOptions.ChosenGoal >= 1)
             {GapLocationReading.StartGapLocationInitializationLoop(Client);}
         //GoalTracking.DeriveGoal(Client);
-        //GoalTracking.StartGoalFinderLoop(Client);
+        //GoalTracking.StartGoalFinderLoop(Client, THAWOptions);
     }
 
     private static List<ILocation> GetLocations()
@@ -484,6 +481,8 @@ public partial class App : Application
             Log.Logger.Warning(" /currentstats - Prints out your current stats given by archipelago.");
             Log.Logger.Warning(" /readhwgapX - Checks the associated Hollywood gap (where X is the gap index number) to make sure its reading correctly.");
             Log.Logger.Warning(" /emergencygoalsend - Completes your slot and sends your goal for emergency purposes.");
+            Log.Logger.Warning(" /goal - Says what your goal is.");
+            Log.Logger.Warning(" /checkgoal - Checks the goal completion and sends it if it finds its complete.");
             Log.Logger.Warning("--- End of THAWAP commands. ---");
             Client?.SendMessage(a.Command); /* send original command through client for the rest of /help - maybe player will have something if they are an admin. */
         }
@@ -502,6 +501,26 @@ public partial class App : Application
         else if (command.StartsWith("/emergencygoalsend"))
         {
             GoalTracking.SendGoal(Client);
+        }
+        else if (command.StartsWith("/goal"))
+        {
+           uint currentgoal = THAWOptions.ChosenGoal;
+           if (currentgoal == 0)
+           {Log.Logger.Warning("Your current goal is Smash the T-rex");}
+           if (currentgoal == 1)
+           {Log.Logger.Warning("Your current goal is Get to the Skate Ranch");}
+        }
+        else if (command.StartsWith("/checkgoal"))
+        {   if (THAWOptions.ChosenGoal==0)
+            {
+                if (Memory.ReadBit(Addresses.BeverlyHills,5))
+                {GoalTracking.SendGoal(Client);}
+            }
+            if (THAWOptions.ChosenGoal==1)
+            {
+                if (Memory.ReadBit(Addresses.SkateRanch,5))
+                {GoalTracking.SendGoal(Client);}
+            }
         }
     }
 
@@ -562,7 +581,16 @@ public partial class App : Application
         Dictionary<string, object> slotData = slotDataTask.Result;
 
         THAWOptions = new TonyHawkOptions(App.Client.Options, slotData);
-        Log.Logger.Information($"Current goal is {THAWOptions.ChosenGoal.ToString()}");
+        uint currentgoal = THAWOptions.ChosenGoal;
+        if (currentgoal == 0)
+           {Log.Logger.Warning("Your current goal is Smash the T-rex");}
+        else if (currentgoal == 1)
+           {Log.Logger.Warning("Your current goal is Get to the Skate Ranch");}
+        
+        if (THAWOptions.TrickCashing == true)
+            {{Log.Logger.Warning("Tricks 4 Cash is turned on.");}}
+        else if (THAWOptions.TrickCashing == false)
+            {{Log.Logger.Warning("Tricks 4 Cash is turned off.");}}
     }
 
     private static void OnDisconnected(object sender, EventArgs args)
