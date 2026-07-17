@@ -13,7 +13,7 @@ Archipelago Client for Tony Hawk's American Wasteland (USA) (Collector's Edition
 # Required Software
 * A current stable version of PCSX2. It may not work with very old versions. (I tested and built the program using 2.6.2, for example)
 * A rom for Tony Hawk's American Wasteland (USA) (Collector's Edition). **IT MUST BE THIS SPECIFIC VERSION.**
-* A current APworld (and optionally a Yaml file to skip a step) which you can find [here](https://github.com/TheLivingShadow97/THAWAP/releases/tag/Latest).
+* A current APworld (and optionally a Yaml file to skip a step) which you can find [here](https://github.com/TheLivingShadow97/THAWAP/releases).
 * An up-to-date version of the [THAWAPClient, which you can download here](https://github.com/TheLivingShadow97/THAWAPClient/releases).
 * [Installed Archipelago Launcher, found here.](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
 
