@@ -78,3 +78,8 @@ Special thanks to:
 * Overlay does not work at present, but the rest of the app seems to work fine.
 * Locations include all buyables, gaps, tagging side missions and main missions until you smash the t-rex before entering Beverly Hills.
 * Items include all 10 progressive stats from 1-10, all unlockable skating abilities like manual and revert for example, and cash.
+## Version 0.0.2
+- Adds Beverly Hills and all its early gaps, buyables, and missions as well as a bus access item that lets you travel there early before smashing the t-rex.
+- Adds a new yaml toggleable "Tricks 4 Cash" system whereby the client converts successfully landed high-scoring combos into cash. 
+- Adds a new goal (Get to the Skate Ranch).
+- Includes numerous fixes to generation and the production of filler items to play much better with other worlds.
