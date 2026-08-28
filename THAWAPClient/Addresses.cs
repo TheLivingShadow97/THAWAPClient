@@ -15,10 +15,55 @@ namespace THAWAPClient
         public static ulong CurrentLevel = 0xd240b0;
         public static ulong InGameTime = 0xd55644;
         public static ulong TopLeftScore = 0x716830;
+        public static ulong Xcoord = 0x715b20;
+        public static ulong Ycoord = 0x715b24;
+        public static ulong Zcoord = 0x715b28;
+        public static ulong SkaterPointer = 0x71b55c;
+        //+88
+        //b0 = Has Board
+        //b1-b7 = Render Body
+        //+89
+        //Accessories and things rendering continues
+        public static ulong SkateboardDisabled = 0x94a158;
+        public static ulong CurrentStatus = 0x715edc;
+        //0 = Grounded
+        //1 = Airborne
+        //2 = Wall Riding
+        //3 = Lipping
+        //4 = Grinding
+        //5 = Sticker Slapping/Wall Planting
+        //6 = Stalling
+        public static ulong IgnoreInput = 0x7167fc;
+        //b0
+
+        //floats
+        public static ulong CurrentManualSeconds = 0x71d420;
+        public static ulong ComboManualSeconds = 0x71d424;
+        public static ulong BestManualSeconds = 0x71d428;
+        public static ulong CurrentGrindSeconds = 0x71d4a0;
+        public static ulong ComboGrindSeconds = 0x71d4a4;
+        public static ulong BestGrindSeconds = 0x71d4a8;
+        public static ulong CurrentLipSeconds = 0x71d520;
+        public static ulong ComboLipSeconds = 0x71d524;
+        public static ulong BestLipSeconds = 0x71d528;
+        public static ulong CurrentSkitchSeconds = 0x71d5a0;
+        public static ulong ComboSkitchSeconds = 0x71d5a4;
+        public static ulong BestSkitchSeconds = 0x71d5a8;
+
+        //Misc
+        public static ulong BMXTotalMissionsCompleted = 0xd24298;
+        public static ulong SponsorChallengesCompleted = 0xd242d8;
 
         //Gap Start Addresses
         public static ulong HWGapStart = 0xd240b8;
         public static ulong BHGapStart = 0xd240bc;
+        public static ulong SRGapStart = 0xd240d4;
+        public static ulong DTGapStart = 0xd240c0;
+        public static ulong VPGapStart = 0xd240f4;
+        public static ulong SMGapStart = 0xd240c8;
+        public static ulong ORGapStart = 0xd240cc;
+        public static ulong ELAGapStart = 0xd240c4;
+        public static ulong CASGapStart = 0xd240d0;
 
         //Shop Address Pointer
         public static ulong ShopStartAddress = 0x5aba4c; 
@@ -32,6 +77,15 @@ namespace THAWAPClient
         public static ulong OilRig = 0x9ae618;
         public static ulong EastLA = 0x9ae518;
         public static ulong Casino = 0x9ae698;
+
+        //Cheats
+        public static ulong CheatsActivated1 = 0x9af717;
+        // b7 = Perfect Manual
+        // b3 = Perfect Rail
+        // b2 = Always Special
+        public static ulong CheatsActivated2 = 0x9af718;
+        // b4 = Perfect Skitch
+        // b1 = Moon Gravity
 
         // Stats (Floats)
         public static ulong AirStat = 0x715e04;

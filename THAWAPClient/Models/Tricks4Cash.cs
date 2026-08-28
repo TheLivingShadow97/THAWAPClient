@@ -48,10 +48,10 @@ namespace THAWAPClient.Models
         {   if (!LevelID.IsInGame())
                 {return;}
             int scorescanresult = Memory.ReadInt(Addresses.TopLeftScore);
-            if (scorescanresult != SavedScanValue && scorescanresult > 4000)
+            if (scorescanresult != SavedScanValue && scorescanresult > 2000)
             {
                 SavedScanValue = scorescanresult;
-                int cashtogive = scorescanresult/4000;
+                int cashtogive = scorescanresult/2000;
                 CashHelper.AddCash(cashtogive);
             };
         }

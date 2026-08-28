@@ -22,6 +22,9 @@ using System.Text.RegularExpressions;
 using System.Reactive.Concurrency;
 
 using THAWAPClient.Helpers;
+using Silk.NET.Core;
+using System.Collections;
+using System.Net.NetworkInformation;
 
 namespace THAWAPClient;
 
@@ -115,10 +118,16 @@ public partial class App : Application
         await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         Client.LocationManager.LocationCompleted += Client_LocationCompleted;
 
-        PlayerState.UpdateSkater(Client);
+        UpdatePlayer(Client);
         PlayerState.StartFixLoop();
         if (THAWOptions.TrickCashing == true)
             {TrickCashing.StartTrickCashLoop();}
+        // if (THAWOptions.DeathlinkSettings>=(uint)TonyHawkOptions.DeathlinkChoice.option_1_bail)
+        //     {Deathlinking.StartDeathLinkLoop(Client, THAWOptions);}
+        if (THAWOptions.ProgressiveWallet==true)
+            {WalletManaging.StartWalletLoop();}
+        if (THAWOptions.SkateboardIncludedInItemPool==true)
+            {SkateboardItem.StartSkateboardLoop();}
         await SetupLocationMonitoring(Client);
     }
     private async void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
@@ -180,22 +189,15 @@ public partial class App : Application
         var locations = GetLocations();
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
-        MissionHandling.StartMissionFinderLoop(Client);
-        if (THAWOptions.ChosenGoal >= 1)
-            {GapLocationReading.StartGapLocationInitializationLoop(Client);}
-        //GoalTracking.DeriveGoal(Client);
-        //GoalTracking.StartGoalFinderLoop(Client, THAWOptions);
+        // MissionHandling.StartMissionFinderLoop(Client);
+        StartAltMissionTracker();
+        GapLocationReading.StartGapLocationInitializationLoop(Client, THAWOptions);
     }
 
     private static List<ILocation> GetLocations()
     {  List<ILocation> listofalllocations = new List<ILocation>();
-       listofalllocations.AddRange(GapLocationReading.GetHollywoodGapData());
-       listofalllocations.AddRange(ShopLocationReading.GetHollywoodShopLocations());
-       if (THAWOptions.ChosenGoal >= 1)
-       {
-        listofalllocations.AddRange(ShopLocationReading.GetBeverlyHillsShopLocations());
-        listofalllocations.AddRange(MiscLocationReading.AddMiscBHLocations());
-       }
+       listofalllocations.AddRange(ShopLocationReading.GetAllShopLocations(THAWOptions));
+       listofalllocations.AddRange(MiscLocationReading.GetMiscLocations(THAWOptions));
        return listofalllocations;
     }
     
@@ -376,6 +378,18 @@ public partial class App : Application
                     Memory.WriteBit(Addresses.BeverlyHills, 6, true);
                     success = true;
                     break;
+                case "Bus Access: Downtown":
+                    Memory.WriteBit(Addresses.Downtown, 6, true);
+                    success = true;
+                    break;
+                case "Progressive Wallet":
+                    WalletManaging.UpdateWallets(Client);
+                    success = true;
+                    break;
+                case "Skateboard Unlock":
+                    SkateboardItem.HasSkateboard=true;
+                    success = true;
+                    break;
             }
 
             Log.Logger.Information($"Received {e.Item.Name} ({e.Item.Id})");
@@ -435,7 +449,8 @@ public partial class App : Application
 
     private static void Client_LocationCompleted(object? sender, Archipelago.Core.Models.LocationCompletedEventArgs e)
     {   
-        if (THAWOptions.ChosenGoal < 1)
+        DebugWriter.LogLocationDebug("Completed Location, " + e.CompletedLocation.Name);
+        if (THAWOptions.ChosenGoal == (uint)TonyHawkOptions.EndGoal.option_smash_the_t_rex)
         {
                 var locid = e.CompletedLocation.Id;
             if (e.CompletedLocation.Name.Contains("HW Mission: Get Into Beverly Hills"))
@@ -451,7 +466,7 @@ public partial class App : Application
             else
             {}
         }
-        else if (THAWOptions.ChosenGoal == 1)
+        else if (THAWOptions.ChosenGoal == (uint)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch)
         {
                 var locid = e.CompletedLocation.Id;
             if (e.CompletedLocation.Name.Contains("Visit the Skate Ranch"))
@@ -465,10 +480,24 @@ public partial class App : Application
                 GoalTracking.SendGoal(Client);
             }
         }
+        else if (THAWOptions.ChosenGoal == (uint)TonyHawkOptions.EndGoal.option_win_the_skate_competition)
+        {
+                var locid = e.CompletedLocation.Id;
+            if (e.CompletedLocation.Name.Contains("VP Mission: Win the Tony Hawk AMJAM"))
+            {
+                Log.Logger.Information($"Sending Goal for location: Win the Skate Competition");
+                GoalTracking.SendGoal(Client);
+            }
+            else if (locid == 50100003) // win amjam location
+            {
+                Log.Logger.Information($"Sending Goal for location: Win the Skate Competition");
+                GoalTracking.SendGoal(Client);
+            }
+        }
 
     }
 
-    public void Context_CommandReceived(object? sender, ArchipelagoCommandEventArgs a)
+    public async void Context_CommandReceived(object? sender, ArchipelagoCommandEventArgs a)
     {
         if (string.IsNullOrWhiteSpace(a.Command)) return;
 
@@ -479,24 +508,22 @@ public partial class App : Application
             Log.Logger.Warning("--- THAWAP commands: --- ");
             Log.Logger.Warning(" /help - Display this menu.");
             Log.Logger.Warning(" /currentstats - Prints out your current stats given by archipelago.");
-            Log.Logger.Warning(" /readhwgapX - Checks the associated Hollywood gap (where X is the gap index number) to make sure its reading correctly.");
+            Log.Logger.Warning(" /unstuck - Teleports you to a certain location in the current level to unstick you.");
             Log.Logger.Warning(" /emergencygoalsend - Completes your slot and sends your goal for emergency purposes.");
             Log.Logger.Warning(" /goal - Says what your goal is.");
             Log.Logger.Warning(" /checkgoal - Checks the goal completion and sends it if it finds its complete.");
+            Log.Logger.Warning(" /deathlink - Toggles deathlink.");
+            Log.Logger.Warning(" /deathlinksettingX - Sets the number in place of X as the number of bails needed to trigger sending a deathlink.");
             Log.Logger.Warning("--- End of THAWAP commands. ---");
             Client?.SendMessage(a.Command); /* send original command through client for the rest of /help - maybe player will have something if they are an admin. */
         }
         else if (command.StartsWith("/currentstats"))
         {
-            PlayerState.PrintCurrentStats();
+            PlayerState.PrintCurrentStats(Client);
         }
-        else if (command.StartsWith("/readhwgap"))
+        else if (command.StartsWith("/unstuck"))
         {
-            int gapindex = int.Parse(Regex.Match(command, @"\d+$").Value);
-            ulong gapaddress = GapLocationReading.GetGapAddress(Addresses.HWGapStart,gapindex);
-            int result = Memory.ReadInt(gapaddress);
-            Log.Logger.Warning("That gap reads as " + result.ToString());
-
+            Unstuck.TeleportMe();
         }
         else if (command.StartsWith("/emergencygoalsend"))
         {
@@ -504,24 +531,55 @@ public partial class App : Application
         }
         else if (command.StartsWith("/goal"))
         {
-           uint currentgoal = THAWOptions.ChosenGoal;
-           if (currentgoal == 0)
-           {Log.Logger.Warning("Your current goal is Smash the T-rex");}
-           if (currentgoal == 1)
-           {Log.Logger.Warning("Your current goal is Get to the Skate Ranch");}
+            switch (THAWOptions.ChosenGoal)
+            {
+            case (uint)TonyHawkOptions.EndGoal.option_smash_the_t_rex:
+            {Log.Logger.Warning("Your current goal is Smash the T-rex");}
+            break;
+            case (uint)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch:
+            {Log.Logger.Warning("Your current goal is Get to the Skate Ranch");}
+            break;
+            case (uint)TonyHawkOptions.EndGoal.option_win_the_skate_competition:
+            {Log.Logger.Warning("Your current goal is Win the Skate Competition.");}
+            break;
+            }
         }
         else if (command.StartsWith("/checkgoal"))
-        {   if (THAWOptions.ChosenGoal==0)
-            {
-                if (Memory.ReadBit(Addresses.BeverlyHills,5))
-                {GoalTracking.SendGoal(Client);}
-            }
-            if (THAWOptions.ChosenGoal==1)
-            {
-                if (Memory.ReadBit(Addresses.SkateRanch,5))
-                {GoalTracking.SendGoal(Client);}
-            }
+        {   switch (THAWOptions.ChosenGoal)
+                {case (uint)TonyHawkOptions.EndGoal.option_smash_the_t_rex:   
+                    {
+                        if (Memory.ReadBit(Addresses.BeverlyHills,5))
+                        {GoalTracking.SendGoal(Client);}
+                    }
+                    break;
+                case (uint)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch:
+                    {
+                        if (Memory.ReadBit(Addresses.SkateRanch,5))
+                        {GoalTracking.SendGoal(Client);}
+                    }
+                    break;
+                case (uint)TonyHawkOptions.EndGoal.option_win_the_skate_competition:
+                    {
+                        if (Memory.ReadBit(Addresses.VansPark,5))
+                        {GoalTracking.SendGoal(Client);}
+                    }
+                    break;
+                }
         }
+        else if (command == "/deathlink")
+        {
+            await Deathlinking.ToggleDeathlink(Client, THAWOptions);
+        }
+        else if (command.StartsWith("/deathlinksetting"))
+        {   string prefix = "/deathlinksetting";
+            string numberText = command[prefix.Length..];
+
+            if (int.TryParse(numberText, out int number))
+            {
+                if (number >= 1)
+                {Deathlinking.NumberofBailsNeeded = number;}
+            }
+        } 
     }
 
     private void Client_MessageReceived(object? sender, MessageReceivedEventArgs e)
@@ -582,11 +640,18 @@ public partial class App : Application
 
         THAWOptions = new TonyHawkOptions(App.Client.Options, slotData);
         uint currentgoal = THAWOptions.ChosenGoal;
-        if (currentgoal == 0)
+        switch (currentgoal)
+        {
+        case (uint)TonyHawkOptions.EndGoal.option_smash_the_t_rex:
            {Log.Logger.Warning("Your current goal is Smash the T-rex");}
-        else if (currentgoal == 1)
+           break;
+        case (uint)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch:
            {Log.Logger.Warning("Your current goal is Get to the Skate Ranch");}
-        
+           break;
+        case (uint)TonyHawkOptions.EndGoal.option_win_the_skate_competition:
+           {Log.Logger.Warning("Your current goal is Win the Skate Competition.");}
+           break;
+        }
         if (THAWOptions.TrickCashing == true)
             {{Log.Logger.Warning("Tricks 4 Cash is turned on.");}}
         else if (THAWOptions.TrickCashing == false)
@@ -596,6 +661,16 @@ public partial class App : Application
     private static void OnDisconnected(object sender, EventArgs args)
     {
         Log.Logger.Information("Disconnected from Archipelago");
+    }
+
+    public static void UpdatePlayer(ArchipelagoClient Client)
+    {
+        PlayerState.UpdateSkater(Client);
+        BusAccess.UpdateBusAccess(Client);
+        if (THAWOptions.ProgressiveWallet==true)
+            {WalletManaging.UpdateWallets(Client);}
+        if (THAWOptions.SkateboardIncludedInItemPool==true)
+            {SkateboardItem.UpdateSkateboard(Client);}
     }
 
     //private static bool ValidateGameVersion()
@@ -618,4 +693,17 @@ public partial class App : Application
 
         //return true;
     //}
+
+    public void StartAltMissionTracker()
+    {
+        MissionReader MissionReaderObject = new MissionReader
+            {
+                _Client = Client
+            };
+            Thread MissionReaderThread = new Thread(MissionReaderObject.MissionScan);
+
+            // Start the worker thread.
+            MissionReaderThread.Start();
+            DebugWriter.LogMissionDebug("Starting Alt Mission Tracker");
+    }
 }

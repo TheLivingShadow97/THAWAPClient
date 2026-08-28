@@ -7,8 +7,6 @@ namespace THAWAPClient.Models
 {
     public static class PlayerState
     {
-        //public static int HeldCash { get; set; }
-
         //stats
         public static float StatAir { get; set => field = Math.Min(value, 10); } = 0;
         public static float StatRun { get; set => field = Math.Min(value, 10); } = 0;
@@ -22,26 +20,26 @@ namespace THAWAPClient.Models
         public static float StatManual { get; set => field = Math.Min(value, 10); } = 0;
 
         //skater abilities
-        public static int HasManual { get; set; } = 0;
-        public static int HasRevert { get; set; } = 0;
-        public static int HasSpineTransfer { get; set; } = 0;
-        public static int HasWallRide { get; set; } = 0;
-        public static int HasStickerSlap { get; set; } = 0;
-        public static int HasFlatland { get; set; } = 0;
-        public static int HasNatasSpin { get; set; } = 0;
-        public static int HasBoneless { get; set; } = 0;
-        public static int HasSpecial { get; set; } = 0;
-        public static int HasFocus { get; set; } = 0;
-        public static int HasFlips { get; set; } = 0;
-        public static int HasStall { get; set; } = 0;
-        public static int HasSkitch { get; set; } = 0;
-        public static int HasCaveman { get; set; } = 0;
-        public static int HasWallRun { get; set; } = 0;
-        public static int HasShimmy { get; set; } = 0;
-        public static int HasWallFlip { get; set; } = 0;
-        public static int HasBertSlide { get; set; } = 0;
-        public static int HasTuck { get; set; } = 0;
-        public static int HasBonedOllie { get; set; } = 0;
+        public static int HasManual { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasRevert { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasSpineTransfer { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasWallRide { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasStickerSlap { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasFlatland { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasNatasSpin { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasBoneless { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasSpecial { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasFocus { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasFlips { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasStall { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasSkitch { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasCaveman { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasWallRun { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasShimmy { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasWallFlip { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasBertSlide { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasTuck { get; set => field = Math.Min(value, 1); } = 0;
+        public static int HasBonedOllie { get; set => field = Math.Min(value, 1); } = 0;
 
         private static CancellationTokenSource? _cts;
 
@@ -66,9 +64,7 @@ namespace THAWAPClient.Models
             {
                 while (!token.IsCancellationRequested)
                 {
-                    await FixAllStatsAsync();
-                    await FixAllAbilitiesAsync();
-
+                    await Task.WhenAll(FixAllStatsAsync(), FixAllAbilitiesAsync());
                     await Task.Delay(TimeSpan.FromSeconds(1), token);
                 }
             }
@@ -178,8 +174,9 @@ namespace THAWAPClient.Models
         public static Task FixTuckAbilityAsync() => FixAbilityAsync(Addresses.AbilityTuck, HasTuck);
         public static Task FixBonedOllieAbilityAsync() => FixAbilityAsync(Addresses.AbilityBonedOllie, HasBonedOllie);
 
-        public static void PrintCurrentStats()
+        public static void PrintCurrentStats(ArchipelagoClient Client)
             {
+                UpdateSkater(Client);
                 Log.Logger.Warning("--- Current Archipelago Stats --- ");
                 Log.Logger.Warning("Air Stat = " + StatAir.ToString());
                 Log.Logger.Warning("Run Stat = " + StatRun.ToString());

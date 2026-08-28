@@ -9,14 +9,25 @@ namespace THAWAPClient.Models
 {
     public class GapLocationReading
     {   
+        public static bool HollywoodNeeded = false;
+        public static bool BeverlyHillsNeeded = false;
+        public static bool SkateRanchNeeded = false;
+        public static bool DowntownNeeded = false;
+
         private static CancellationTokenSource? _cts4gr;
 
-        public static void StartGapLocationInitializationLoop(ArchipelagoClient Client)
+        public static void StartGapLocationInitializationLoop(ArchipelagoClient Client, TonyHawkOptions Options)
         {
             if (_cts4gr != null)
                 return; // already running
 
             _cts4gr = new CancellationTokenSource();
+            HollywoodNeeded = true;
+            if (Options.ChosenGoal >= (int)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch)
+                {BeverlyHillsNeeded = true;};
+            if (Options.ChosenGoal >= (int)TonyHawkOptions.EndGoal.option_win_the_skate_competition)
+                {DowntownNeeded = true;
+                SkateRanchNeeded = true;};
             _ = StartGapLocationInitializationLoopAsync(_cts4gr.Token, Client);
         }
 
@@ -34,7 +45,7 @@ namespace THAWAPClient.Models
                 {
                     await EvaluateInitializationAsync(Client);
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                    await Task.Delay(TimeSpan.FromSeconds(2), token);
                 }
             }
             catch (TaskCanceledException)
@@ -47,19 +58,107 @@ namespace THAWAPClient.Models
         {   if (!LevelID.IsInGame())
                 {return;}
             int currentlevel = LevelID.GetCurrentLevel();
-            if (currentlevel == 2)
+            if (currentlevel == (int)LevelID.CurrentLevel.Hollywood && HollywoodNeeded == true)
             {
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                HollywoodNeeded = false;
+                await Task.Delay(TimeSpan.FromSeconds(8));
+                var HollywoodGaps = GetHollywoodGapData();
+                foreach (var loc in HollywoodGaps)
+                    {
+                        Client.LocationManager.AddLocation(loc);
+                    }
+                Log.Logger.Information("Hollywood Gap Locations Added");
+                DebugWriter.LogLocationDebug("Hollywood Gap Locations Added");
+            }
+            if (currentlevel == (int)LevelID.CurrentLevel.BeverlyHills && BeverlyHillsNeeded == true)
+            {
+                BeverlyHillsNeeded = false;
+                await Task.Delay(TimeSpan.FromSeconds(8));
                 var BeverlyHillsGaps = GetBeverlyHillsGapData();
                 foreach (var loc in BeverlyHillsGaps)
                     {
                         Client.LocationManager.AddLocation(loc);
                     }
                 Log.Logger.Information("Beverly Hills Gap Locations Added");
-                StopGapLocationInitializationLoop();
-            };
+                DebugWriter.LogLocationDebug("Beverly Hills Gap Locations Added");
+            }
+            if (currentlevel == (int)LevelID.CurrentLevel.SkateRanch && SkateRanchNeeded == true)
+            {
+                SkateRanchNeeded = false;
+                await Task.Delay(TimeSpan.FromSeconds(8));
+                var SkateRanchGaps = GetSkateRanchGapData();
+                foreach (var loc in SkateRanchGaps)
+                    {
+                        Client.LocationManager.AddLocation(loc);
+                    }
+                Log.Logger.Information("Skate Ranch Gap Locations Added");
+                DebugWriter.LogLocationDebug("Skate Ranch Gap Locations Added");
+            }
+            if (currentlevel == (int)LevelID.CurrentLevel.Downtown && DowntownNeeded == true)
+            {
+                DowntownNeeded = false;
+                await Task.Delay(TimeSpan.FromSeconds(8));
+                var DowntownGaps = GetDowntownGapData();
+                foreach (var loc in DowntownGaps)
+                    {
+                        Client.LocationManager.AddLocation(loc);
+                    }
+                Log.Logger.Information("Downtown Gap Locations Added");
+                DebugWriter.LogLocationDebug("Downtown Gap Locations Added");
+            }
+            if ((HollywoodNeeded == false) && (BeverlyHillsNeeded == false) && (SkateRanchNeeded == false) && (DowntownNeeded == false))
+                {StopGapLocationInitializationLoop();}
         }
-    
+
+        public static List<ILocation> GetDowntownGapData()
+        {
+            var locations = new List<ILocation>();
+
+            int baseId = 40200000;
+
+            for (int i = 0; i < DowntownGapNames.Count; i++)
+            {
+                int index = i + 1;
+
+                locations.Add(new Location
+                {
+                    Id = baseId + index,
+                    Name = $"DT Gap: {DowntownGapNames[i]}",
+                    Address = GetGapAddress(Addresses.DTGapStart, index),
+                    CheckType = LocationCheckType.UInt,
+                    CheckValue = "0",
+                    CompareType = LocationCheckCompareType.GreaterThan,
+                    Category = "Downtown Gaps"
+                });
+            }
+
+            return locations;
+        }
+
+        public static List<ILocation> GetSkateRanchGapData()
+        {
+            var locations = new List<ILocation>();
+
+            int baseId = 30200000;
+
+            for (int i = 0; i < SkateRanchGapNames.Count; i++)
+            {
+                int index = i + 1;
+
+                locations.Add(new Location
+                {
+                    Id = baseId + index,
+                    Name = $"SR Gap: {SkateRanchGapNames[i]}",
+                    Address = GetGapAddress(Addresses.SRGapStart, index),
+                    CheckType = LocationCheckType.UInt,
+                    CheckValue = "0",
+                    CompareType = LocationCheckCompareType.GreaterThan,
+                    Category = "Skate Ranch Gaps"
+                });
+            }
+
+            return locations;
+        }
 
         public static List<ILocation> GetBeverlyHillsGapData()
         {
@@ -200,6 +299,99 @@ namespace THAWAPClient.Models
             "Get your pizza",
             "Wall 2 wire",
             "Learn to swim"
+        ];
+
+        private static readonly List<string> SkateRanchGapNames =
+        [
+            "Car hop",
+            "Car Parts Hop",
+            "Casino Elevator",
+            "Back of Couch",
+            "Control Box Spinner",
+            "Downtown Street",
+            "Bail Bonds Wallride",
+            "Courthouse Big Spine",
+            "Strange Decoration Boost Air",
+            "Bail Bonds Limousine",
+            "Record Co. Top Jump",
+            "Ventura Fwy Drop",
+            "Spotlight Air",
+            "Bag Shop Arch Manual",
+            "Green Dome Air",
+            "Skatepark Office Kicker",
+            "Museum Gates Raildrop",
+            "El Teniente Grind",
+            "Fame Grind Gap",
+            "Fire Escape Grind",
+            "City Hall Star Jump",
+            "Dinosaur Head Gap",
+            "Pyramid Natas",
+            "Destroyed Hotel Jump",
+            "Chinaman Tower",
+            "777 Gold Ring",
+            "Escalators Pop",
+            "FLOOR PLATE GAP",
+            "Mexico Bell",
+            "Movie Ropes Hip Transfer",
+            "Oil Tanks Pipe",
+            "Underground Tunnel Pipe",
+            "Oil Ring Vator",
+            "Pier Scope Jump",
+            "Oil Rig Chunk Air",
+            "Kicker to Pier Sign",
+            "Ferris A-Frame Drop",
+            "Shark Head Tele",
+            "WASTELAND Grind",
+            "Roulet Hop 2 Natas",
+            "Doggtown Stairset",
+            "Spike Pit Statue Natas",
+            "Green Pipe Point Manual"
+        ];
+
+        private static readonly List<string> DowntownGapNames =
+        [
+            "Hop On!",
+            "Car hop",
+            "China Awning",
+            "Chinatown Sign",
+            "Electric Wire!",
+            "Pillar",
+            "Dumpster 2 Loading!",
+            "Loading 2 Dumpster!",
+            "Dumpster 2 Fence!",
+            "Fence 2 Dumpster!",
+            "Moca 2 Pool",
+            "Angel Goin Down!",
+            "Fence 2 Fence!",
+            "Loading 2 Fence!",
+            "Bowl 2 Edge",
+            "Fence 2 Loading!",
+            "Loading Edge!",
+            "Over the Fountain!",
+            "QP 2 Edge",
+            "Pipe a Chuy",
+            "Pool 2 Moca",
+            "Angel Goin Up!",
+            "Over The Hut",
+            "Chinese QP Transfer",
+            "Fountain Manual",
+            "Freeway Flyer",
+            "Low 2 Medium",
+            "Medium 2 High",
+            "Around The Metro",
+            "Big Blow Transfer",
+            "Chinese Air Transfer!",
+            "La Sala Air Transfer!",
+            "Low 2 High",
+            "Manual The Dumpster!",
+            "Awning 2 Wire!",
+            "Freeway Bank!",
+            "Underground Bank Transfer",
+            "Wire 2 Awning!",
+            "Tunnel Transfer",
+            "Pyramid Drop!",
+            "Big Lip!",
+            "Overpass Air!"
         ];
         
     }

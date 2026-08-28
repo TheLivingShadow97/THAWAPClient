@@ -44,7 +44,7 @@ To connect Tony Hawk's American Wasteland (USA) (Collector's Edition) to Archipe
 
 1. Start PCSX2 as well as your ROM and make sure you have no save files for THAW. You need a fresh save to keep from mistakenly sending checks from earlier progress. 
 
-2. Start your new story save file, pick your default skater, and **wait up until you exit the bus and you're finally in-game** ready to change your hair, then pause the game.
+2. Start your new story save file, pick your default skater, and **wait up until you exit the bus and you're finally in-game** ready to change your hair, then pause the game. **Do not connect until you are in-game**.
 
 3. Connect the Client:
    Run `THAWAPClient.exe` that you extracted earlier from the THAWAP Desktop Client zip.  

@@ -1,11 +1,27 @@
 using Archipelago.Core.Util;
 using Archipelago.Core.Models;
+using THAWAPClient.Helpers;
 
 
 namespace THAWAPClient.Models
 {
     public class ShopLocationReading
     {   
+        public static List<ILocation> GetAllShopLocations(TonyHawkOptions THAWOptions)
+        {
+            List<ILocation> shoplocations = new List<ILocation>();
+
+            if ((THAWOptions.ChosenGoal <= (int)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch) || (THAWOptions.Shopsanity==true))
+            {   shoplocations.AddRange(GetHollywoodShopLocations());}
+            if ((THAWOptions.ChosenGoal == (int)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch) || ((THAWOptions.Shopsanity==true) && (THAWOptions.ChosenGoal >= (int)TonyHawkOptions.EndGoal.option_get_to_the_skate_ranch)))
+            {   shoplocations.AddRange(GetBeverlyHillsShopLocations());}
+            if ((THAWOptions.Shopsanity==true) && (THAWOptions.ChosenGoal >= (int)TonyHawkOptions.EndGoal.option_win_the_skate_competition))
+            {   shoplocations.AddRange(GetDowntownShopLocations());}
+            DebugWriter.LogLocationDebug("Added shop locations.");
+
+            return shoplocations;
+        }
+
         public static void AddShopLocations(List<ILocation> locations, Dictionary<string, uint> items, int baseId, string _Category)
         {
             int index = 0;
@@ -69,6 +85,17 @@ namespace THAWAPClient.Models
                 });
 
 
+            return locations;
+        }
+
+        public static List<ILocation> GetDowntownShopLocations()
+        {
+            var locations = new List<ILocation>();
+
+            AddShopLocations(locations, dtDecks,     40310000, "Downtown Shop Locations");
+            AddShopLocations(locations, dtShoes,      40320000, "Downtown Shop Locations");
+            AddShopLocations(locations, dtHats,      40330000, "Downtown Shop Locations");
+            
             return locations;
         }
 
@@ -446,6 +473,57 @@ namespace THAWAPClient.Models
             { "BH Glasses: Von Zipper Rockford", 0x2e8 },
             { "BH Glasses: Von Zipper Brooklyn", 0x2ec },
             { "BH Glasses: Von Zipper Skitch", 0x2f0 },
+        };
+    
+        public static Dictionary<string, uint> dtDecks = new()
+        {
+            { "DT Deck: Almost Stardumb", 0x460 },
+            { "DT Deck: Alva Golf Ball", 0x478 },
+            { "DT Deck: Alva Sacred Geo", 0x48c },
+            { "DT Deck: Antihero Black", 0x49c },
+            { "DT Deck: Baker Navy", 0x4a4 },
+            { "DT Deck: Birdhouse Dragon Skull S", 0x4b4 },
+            { "DT Deck: Birdhouse Giant Rasta", 0x4c8 },
+            { "DT Deck: Blind Swarm", 0x4e0 },
+            { "DT Deck: DGK Hello Williams", 0x4f4 },
+            { "DT Deck: Element Mike V. Knocked Out", 0x508 },
+            { "DT Deck: World Ind Devil Face", 0x53c },
+            { "DT Deck: Plan B P-Rod Calavera", 0x554 },
+            { "DT Deck: Powell Peralta M.V.", 0x568 },
+            { "DT Deck: RDS 3", 0x580 },
+            { "DT Deck: The Firm Stencil Logo 2", 0x5ac },
+            { "DT Deck: World Industries 3", 0x590 },
+        };
+
+        public static Dictionary<string, uint> dtShoes = new()
+        {
+            { "DT Shoes: Etnies Sheckler", 0x6cc },
+            { "DT Shoes: Nike Rodriguez", 0x6f4 },
+        };
+
+        public static Dictionary<string, uint> dtHats = new()
+        {
+            { "DT Hat: Beanie", 0x30c },
+            { "DT Hat: Beret Cap", 0x314 },
+            { "DT Hat: Bandana", 0x31c },
+            { "DT Hat: Bandana Folded", 0x320 },
+            { "DT Hat: Beanie 3", 0x324 },
+            { "DT Hat: Headphones", 0x32c },
+            { "DT Hat: Ivy Hat", 0x330 },
+            { "DT Hat: Dunce", 0x334 },
+            { "DT Hat: Pirate", 0x338 },
+            { "DT Hat: Robin", 0x33c },
+            { "DT Hat: Sun Hat", 0x340 },
+            { "DT Hat: Sombrero", 0x344 },
+            { "DT Hat: Top Hat", 0x348 },
+            { "DT Hat: Tall Hat", 0x34c },
+            { "DT Hat: Turban", 0x350 },
+            { "DT Hat: Paperbag", 0x354 },
+            { "DT Hat: Hawk Lamar", 0x360 },
+            { "DT Hat: Blind Reaper Peeper Cap", 0x37c },
+            { "DT Hat: Vans Cap", 0x38c },
+            { "DT Hat: ES Cap", 0x390 },
+            { "DT Hat: Nixon Beanie", 0x394 },
         };
     }
 }
