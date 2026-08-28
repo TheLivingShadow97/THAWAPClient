@@ -13,7 +13,7 @@ Archipelago Client for Tony Hawk's American Wasteland (USA) (Collector's Edition
 # Required Software
 * A current stable version of PCSX2. It may not work with very old versions. (I tested and built the program using 2.6.2, for example)
 * A rom for Tony Hawk's American Wasteland (USA) (Collector's Edition). **IT MUST BE THIS SPECIFIC VERSION.**
-* A current APworld (and optionally a Yaml file to skip a step) which you can find [here](https://github.com/TheLivingShadow97/THAWAP/releases/tag/Latest).
+* A current APworld (and optionally a Yaml file to skip a step) which you can find [here](https://github.com/TheLivingShadow97/THAWAP/releases).
 * An up-to-date version of the [THAWAPClient, which you can download here](https://github.com/TheLivingShadow97/THAWAPClient/releases).
 * [Installed Archipelago Launcher, found here.](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
 
@@ -78,3 +78,8 @@ Special thanks to:
 * Overlay does not work at present, but the rest of the app seems to work fine.
 * Locations include all buyables, gaps, tagging side missions and main missions until you smash the t-rex before entering Beverly Hills.
 * Items include all 10 progressive stats from 1-10, all unlockable skating abilities like manual and revert for example, and cash.
+## Version 0.0.2
+- Adds Beverly Hills and all its early gaps, buyables, and missions as well as a bus access item that lets you travel there early before smashing the t-rex.
+- Adds a new yaml toggleable "Tricks 4 Cash" system whereby the client converts successfully landed high-scoring combos into cash. 
+- Adds a new goal (Get to the Skate Ranch).
+- Includes numerous fixes to generation and the production of filler items to play much better with other worlds.
