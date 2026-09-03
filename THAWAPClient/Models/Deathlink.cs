@@ -22,9 +22,11 @@ namespace THAWAPClient.Models
             if (deathlink_enabled==false)
             {return;}
             DeathLinkWasReceived=true;
+            NumberofBails = 0;
             await StartBailLoop(deathLink, Client);
-            await Task.Delay(TimeSpan.FromSeconds(6));
-            StopBailLoop();
+            await Task.Delay(TimeSpan.FromSeconds(10));
+            await StopBailLoop();
+            await Task.Delay(TimeSpan.FromSeconds(3));
             DeathLinkWasReceived=false;
         }
         public static async Task ToggleDeathlink(ArchipelagoClient Client, TonyHawkOptions Options)
@@ -32,7 +34,7 @@ namespace THAWAPClient.Models
             if (deathlink_enabled==false)
             {   Log.Logger.Information("Starting Deathlink Service.");
                 StartDeathLinkLoop(Client, Options);}
-            if (deathlink_enabled==true)
+            else if (deathlink_enabled==true)
             {   Log.Logger.Information("Stopping Deathlink Service.");
                 StopDeathLinkLoop();}
         }
@@ -42,21 +44,30 @@ namespace THAWAPClient.Models
         public static async Task StartBailLoop(DeathLink deathLink, ArchipelagoClient Client)
         {
             if (deathLink.Source == Client.CurrentSession.Players.ActivePlayer.Name)
-        {
+            {
             return;
-        }
+            }
             if (_cts4bp != null)
                 return; // already running
             
             _cts4bp = new CancellationTokenSource();
-            
+            Log.Logger.Information("Deathlink received from " + deathLink.Source.ToString());
+            if (deathLink.Cause != null)
+            {
+                Log.Logger.Information(deathLink.Cause);
+            }
             _ = StartBailLoopAsync(_cts4bp.Token);
         }
 
-        public static void StopBailLoop()
+        public static async Task StopBailLoop()
         {
             _cts4bp?.Cancel();
             _cts4bp = null;
+            await Task.WhenAll(
+                ResetBailable(Addresses.ComboGrindSeconds),
+                ResetBailable(Addresses.ComboManualSeconds),
+                ResetBailable(Addresses.ComboLipSeconds)
+            );
         }
 
         public static async Task StartBailLoopAsync(CancellationToken token)
@@ -78,8 +89,8 @@ namespace THAWAPClient.Models
 
         public static async Task EvaluateBailAsync()
         {
-            if (Memory.ReadBit(Addresses.IgnoreInput,0) == true)
-            {   StopBailLoop();
+            if (Memory.ReadBit(Addresses.Deathlink1,0) == true)
+            {   await StopBailLoop();
                 DebugWriter.LogDeathlinkDebug("Player bailed successfully on deathlink receive.");
                 return;}
             await Task.WhenAll(
@@ -90,10 +101,12 @@ namespace THAWAPClient.Models
         }
 
         public static async Task MakeBailable(ulong Address)
-        {if (Memory.ReadFloat(Address)!=200)
-            {
-                Memory.Write(Address, 200);
-            }
+        {   float crash = 200;  
+            Memory.Write(Address, crash);
+        }
+        public static async Task ResetBailable(ulong Address)
+        {   float fixcrash = 0;  
+            Memory.Write(Address, fixcrash);
         }
 
         private static CancellationTokenSource? _cts4dl;
@@ -164,7 +177,7 @@ namespace THAWAPClient.Models
         {
             if (DeathLinkWasReceived == true)
             {   return;}
-            if (Memory.ReadBit(Addresses.IgnoreInput, 0)==true)
+            if (Memory.ReadBit(Addresses.Deathlink1, 0)==true)
             {
                 NumberofBails++;
                 DebugWriter.LogDeathlinkDebug("Bail counted. You are at "+ NumberofBails.ToString() + " out of " + NumberofBailsNeeded.ToString() + " bails needed to send a deathlink");
@@ -175,10 +188,17 @@ namespace THAWAPClient.Models
                     await SendTHAWDeathLink(Client);
                 }
                 Log.Logger.Warning("You are at "+ NumberofBails.ToString() + " out of " + NumberofBailsNeeded.ToString() + " bails needed to send a deathlink");
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                bool addresscurrentstate = true;
+                while (addresscurrentstate==true)
+                {
+                    addresscurrentstate = Memory.ReadBit(Addresses.Deathlink1,0);
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+
+                }
             }
 
         }
+
         public static async Task SendTHAWDeathLink(ArchipelagoClient Client)
         {
             Log.Logger.Warning("Sending Deathlink");
@@ -188,7 +208,7 @@ namespace THAWAPClient.Models
             switch (randomNumber)
             {
                 case 1:
-                    _deathLinkService.SendDeathLink(new DeathLink(Client.CurrentSession.Players.ActivePlayer.Name, Client.CurrentSession.Players.ActivePlayer.Name.ToString() + " broke his leg in 12 places, including California."));
+                    _deathLinkService.SendDeathLink(new DeathLink(Client.CurrentSession.Players.ActivePlayer.Name, Client.CurrentSession.Players.ActivePlayer.Name.ToString() + " broke his leg in 12 places, now including California."));
                     break;
                 case 2:
                     _deathLinkService.SendDeathLink(new DeathLink(Client.CurrentSession.Players.ActivePlayer.Name, Client.CurrentSession.Players.ActivePlayer.Name.ToString() + " got a free curbside nosejob."));

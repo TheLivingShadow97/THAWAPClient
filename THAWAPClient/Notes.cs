@@ -12,3 +12,5 @@
 //- Trick score unlock items?
 //- Grind and lip unlocks?
 //- Extra trick locations?
+
+//any updates need to update the apworld version's slot data and the client version in logs

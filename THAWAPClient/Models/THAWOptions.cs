@@ -14,6 +14,7 @@ namespace THAWAPClient.Models
         //public bool ShopKeys { get; set; }
         public bool SkateboardIncludedInItemPool { get; set; }
         public uint DeathlinkSettings { get; set; }
+        public string APWorldCurrentVersion { get; set; }
 
         public TonyHawkOptions(Dictionary<string, object> optionsDict, Dictionary<string, object> slotData)
         {
@@ -46,6 +47,10 @@ namespace THAWAPClient.Models
                 {DeathlinkSettings = ((JsonElement)App.Client.Options["deathlink_choice"]).GetUInt32();}
             else
                 {DeathlinkSettings = 0;}
+            if (App.Client.Options.ContainsKey("current_apworld_version"))
+                {APWorldCurrentVersion = ((JsonElement)App.Client.Options["current_apworld_version"]).GetString();}
+            else
+                {APWorldCurrentVersion = "Unread or Old APworld";}
         }
 
         internal bool GetBool(string str)

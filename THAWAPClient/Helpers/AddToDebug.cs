@@ -10,6 +10,23 @@ namespace THAWAPClient.Helpers
         private static readonly object _logmissionLock = new object();
         private static readonly object _logdeathlinkLock = new object();
         private static readonly object _logplayerLock = new object();
+        private static readonly object _logconnectionLock = new object();
+        public static void LogConnectionDebug(string message)
+        {
+            string logFolder = Path.Combine(AppContext.BaseDirectory, "Logs");
+
+            Directory.CreateDirectory(logFolder);
+
+            string logFile = Path.Combine(logFolder, "connectiondebug.txt");
+
+            lock (_logconnectionLock)
+            {
+                File.AppendAllText(
+                    logFile,
+                    $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}"
+                );
+            }
+        }
         public static void LogMissionDebug(string message)
         {
             string logFolder = Path.Combine(AppContext.BaseDirectory, "Logs");

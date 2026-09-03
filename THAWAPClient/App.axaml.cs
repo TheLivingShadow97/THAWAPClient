@@ -120,10 +120,12 @@ public partial class App : Application
 
         UpdatePlayer(Client);
         PlayerState.StartFixLoop();
+        DebugWriter.LogConnectionDebug("Apworld is " + THAWOptions.APWorldCurrentVersion);
+        DebugWriter.LogConnectionDebug("Client version is downtown update.");
         if (THAWOptions.TrickCashing == true)
             {TrickCashing.StartTrickCashLoop();}
-        // if (THAWOptions.DeathlinkSettings>=(uint)TonyHawkOptions.DeathlinkChoice.option_1_bail)
-        //     {Deathlinking.StartDeathLinkLoop(Client, THAWOptions);}
+        if (THAWOptions.DeathlinkSettings>=(uint)TonyHawkOptions.DeathlinkChoice.option_1_bail)
+            {Deathlinking.StartDeathLinkLoop(Client, THAWOptions);}
         if (THAWOptions.ProgressiveWallet==true)
             {WalletManaging.StartWalletLoop();}
         if (THAWOptions.SkateboardIncludedInItemPool==true)
@@ -578,6 +580,7 @@ public partial class App : Application
             {
                 if (number >= 1)
                 {Deathlinking.NumberofBailsNeeded = number;}
+                Log.Logger.Information("You now need " + number.ToString() + " bails to send a deathlink.");
             }
         } 
     }

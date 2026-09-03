@@ -11,9 +11,9 @@ namespace THAWAPClient.Models
             int tempcurrentlevel = Memory.ReadInt(Addresses.CurrentLevel);
             if (tempcurrentlevel == (int)LevelID.CurrentLevel.Hollywood)
             {
-                Memory.Write(Addresses.Xcoord, -2200);
-                Memory.Write(Addresses.Ycoord, 100);
-                Memory.Write(Addresses.Zcoord, -2200);
+                Memory.Write(Addresses.Xcoord, -2200f);
+                Memory.Write(Addresses.Ycoord, 100f);
+                Memory.Write(Addresses.Zcoord, -2200f);
             }
             else if (tempcurrentlevel == (int)LevelID.CurrentLevel.BeverlyHills)
             {
@@ -23,15 +23,15 @@ namespace THAWAPClient.Models
             }
             else if (tempcurrentlevel == (int)LevelID.CurrentLevel.SkateRanch)
             {
-                Memory.Write(Addresses.Xcoord, -25000);
-                Memory.Write(Addresses.Ycoord, 600);
-                Memory.Write(Addresses.Zcoord, 9300);
+                Memory.Write(Addresses.Xcoord, -25000f);
+                Memory.Write(Addresses.Ycoord, 600f);
+                Memory.Write(Addresses.Zcoord, 9300f);
             }
             else if (tempcurrentlevel == (int)LevelID.CurrentLevel.Downtown)
             {
-                Memory.Write(Addresses.Xcoord, 10000);
-                Memory.Write(Addresses.Ycoord, -50);
-                Memory.Write(Addresses.Zcoord, 6200);
+                Memory.Write(Addresses.Xcoord, 10000f);
+                Memory.Write(Addresses.Ycoord, -50f);
+                Memory.Write(Addresses.Zcoord, 6200f);
             }
             else
             {}

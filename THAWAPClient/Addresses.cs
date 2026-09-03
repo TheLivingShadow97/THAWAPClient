@@ -36,6 +36,12 @@ namespace THAWAPClient
         public static ulong IgnoreInput = 0x7167fc;
         //b0
 
+        //possible deathlink IDs, require testing
+        public static ulong Deathlink1 = 0x715F6C;
+        public static ulong Deathlink2 = 0x71D6A0;
+        public static ulong Deathlink3 = 0x719FB6;
+
+
         //floats
         public static ulong CurrentManualSeconds = 0x71d420;
         public static ulong ComboManualSeconds = 0x71d424;
