@@ -1,0 +1,5 @@
+## AI Usage Disclosure
+
+I would consider this project's use of AI to be minimal. This is a first coding project for me, so AI has been consulted mainly for identifying or explaining the meaning of errors, as well as giving examples for things like syntax, or how to generate a random number, or parse a number from a string. I would say it was asked mostly very basic/general questions for people more experienced in coding, and not responsible for very much of the program's actual actions, which were authored by me and heavily aided by the library I've used and the example code of others who have used it. It was also used in transferring the raw data for locations I have from spreadsheets into c# lists once I'd given it an example of the format I need it in, which probably saved me hours.
+
+All of these things have been tested and proofread and most of the time if the AI suggested something I went and watched some videos about it or learned some other way like stackoverflow until I understood it more. I would not say this is vibe coded at all.

@@ -33,6 +33,12 @@ namespace THAWAPClient.Models
                 Memory.Write(Addresses.Ycoord, -50f);
                 Memory.Write(Addresses.Zcoord, 6200f);
             }
+            else if (tempcurrentlevel == (int)LevelID.CurrentLevel.VansPark)
+            {
+                Memory.Write(Addresses.Xcoord, -7600f);
+                Memory.Write(Addresses.Ycoord, 100f);
+                Memory.Write(Addresses.Zcoord, 1700f);
+            }
             else
             {}
         }

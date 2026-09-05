@@ -67,6 +67,7 @@ public partial class App : Application
             {
                 DataContext = Context
             };
+            desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnMainWindowClose; // needed because otherwise "hidden" Controls window results in main window close leaving app running
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
@@ -704,6 +705,9 @@ public partial class App : Application
                 _Client = Client
             };
             Thread MissionReaderThread = new Thread(MissionReaderObject.MissionScan);
+            {
+                MissionReaderThread.IsBackground = true;
+            }
 
             // Start the worker thread.
             MissionReaderThread.Start();

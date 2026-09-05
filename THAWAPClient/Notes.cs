@@ -14,3 +14,7 @@
 //- Extra trick locations?
 
 //any updates need to update the apworld version's slot data and the client version in logs
+
+//Failed Mission Sends
+//5th dt tagging misssion, sent like an hour or 2 later
+//5th hw tagging mission

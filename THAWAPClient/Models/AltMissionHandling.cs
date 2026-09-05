@@ -48,6 +48,9 @@ namespace THAWAPClient.Models
                         Client = _Client
                     };
                     Thread checkerThread = new Thread(checkerObject.EvaluateMission);
+                    {
+                        checkerThread.IsBackground = true;
+                    };
 
                     // Start the worker thread.
                     checkerThread.Start();

@@ -57,12 +57,11 @@ To connect Tony Hawk's American Wasteland (USA) (Collector's Edition) to Archipe
 4. Start playing as normal. You must keep the THAWAP client running while you play the game for items and location to be sent and received correctly. Please Enjoy! :)
 
 # Roadmap
-* Adding of each region and associated gaps and missions, with a few separate goals like "Win the Skate Competion" and "Get to the Skate Ranch" to choose from
+* Adding of each region and associated gaps and missions, with longer goals to choose from
 * Fix the overlay
-* Bus Access, BW Tattoo, and BMX Tri-key Items
+* BW Tattoo and BMX Tri-key Items
 * Traps
 * Skate Tricks Items(ex. The 900)
-* Deathlink(?)
 * ~~BMX Missions~~ Not unless you really want them lol. 
 
 # Special Thanks
@@ -83,3 +82,8 @@ Special thanks to:
 - Adds a new yaml toggleable "Tricks 4 Cash" system whereby the client converts successfully landed high-scoring combos into cash. 
 - Adds a new goal (Get to the Skate Ranch).
 - Includes numerous fixes to generation and the production of filler items to play much better with other worlds.
+## Version 0.0.3
+- Adds all gaps, missions, and buyables from the first entry to the skate ranch up to entering Vans Park through Downtown and winning the skate competition, which is a new goal option.
+- Adds deathlink, as well as a yaml option for how many bails trigger sending it.
+- Adds new yaml options shopsanity, progressive wallet, and whether to include your skateboard itself as an item in the pool.
+- Adds new client features like debug logging for easier bugfixing/troubleshooting, a new "/unstuck" command, a rewritten mission tracker, as well as a text file list of every item name included for easier hinting.

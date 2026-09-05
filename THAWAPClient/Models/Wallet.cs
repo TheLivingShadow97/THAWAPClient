@@ -8,7 +8,7 @@ namespace THAWAPClient.Models
 {
     public class WalletManaging
     {
-        public static int WalletCount { get; set; } = 0;
+        public static int WalletCount { get; set => field = Math.Min(value, 15); } = 0;
 
         public static void UpdateWallets(ArchipelagoClient Client)
         {
