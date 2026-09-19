@@ -512,9 +512,9 @@ public partial class App : Application
             Log.Logger.Warning(" /help - Display this menu.");
             Log.Logger.Warning(" /currentstats - Prints out your current stats given by archipelago.");
             Log.Logger.Warning(" /unstuck - Teleports you to a certain location in the current level to unstick you.");
-            Log.Logger.Warning(" /emergencygoalsend - Completes your slot and sends your goal for emergency purposes.");
+            Log.Logger.Warning(" /emergencygoalsend - Completes your slot and sends your goal, for emergency purposes.");
             Log.Logger.Warning(" /goal - Says what your goal is.");
-            Log.Logger.Warning(" /checkgoal - Checks the goal completion and sends it if it finds its complete.");
+            Log.Logger.Warning(" /checkgoal - Checks for goal completion and sends it if it finds its complete.");
             Log.Logger.Warning(" /deathlink - Toggles deathlink.");
             Log.Logger.Warning(" /deathlinksettingX - Sets the number in place of X as the number of bails needed to trigger sending a deathlink.");
             Log.Logger.Warning("--- End of THAWAP commands. ---");
