@@ -1,8 +1,10 @@
+using Avalonia.Data;
+
 namespace THAWAPClient.Helpers
 {
     public class MissionData
     {
-        public record MissionInfo(string Name, int ApId);
+        public record MissionInfo(string Name, int ApId,  bool IsTricky = false, ulong savedataaddress = 1);
         public static readonly Dictionary<uint, MissionInfo> Missions = new()
         {
             // HW Stage 1 Missions
@@ -14,11 +16,11 @@ namespace THAWAPClient.Helpers
             { 0xF44056E1, new MissionInfo("HW Mission: Learn to Revert", 10100006) },
             { 0x6E2627F6, new MissionInfo("HW Mission: Get Your Stuff Back", 10100007) },
             { 0x2E30A2B8, new MissionInfo("HW Mission: Get Into Beverly Hills", 10100008) },
-            { 0x3A057679, new MissionInfo("HW Mission: First Tagging Mission", 10150001) },
-            { 0x4D0246EF, new MissionInfo("HW Mission: Second Tagging Mission", 10150002) },
-            { 0xD366D34C, new MissionInfo("HW Mission: Third Tagging Mission", 10150003) },
-            { 0xA461E3DA, new MissionInfo("HW Mission: Fourth Tagging Mission", 10150004) },
-            { 0x3D68B260, new MissionInfo("HW Mission: Fifth Tagging Mission", 10150005) },
+            { 0x3A057679, new MissionInfo("HW Mission: First Tagging Mission", 10150001, true, 0x55a2d1) },
+            { 0x4D0246EF, new MissionInfo("HW Mission: Second Tagging Mission", 10150002, true, 0x55a42b) },
+            { 0xD366D34C, new MissionInfo("HW Mission: Third Tagging Mission", 10150003, true, 0x55a3bd) },
+            { 0xA461E3DA, new MissionInfo("HW Mission: Fourth Tagging Mission", 10150004, true, 0x55a35e) },
+            { 0x3D68B260, new MissionInfo("HW Mission: Fifth Tagging Mission", 10150005, true, 0x55a2c8) },
             // Beverly Hills Stage 1 Missions
             { 0x8E2DEC40, new MissionInfo("BH Mission: Learn the Natas Spin", 20100001) },
             { 0xECF5D341, new MissionInfo("BH Mission: Learn Parkour tricks", 20100002) },
@@ -28,20 +30,20 @@ namespace THAWAPClient.Helpers
             { 0x0B655A1C, new MissionInfo("BH Mission: Impress Murphy", 20100006) },
             { 0x7C626A8A, new MissionInfo("BH Mission: Impress Boone", 20100007) },
             { 0x9501CFBF, new MissionInfo("BH Mission: Impress Dave", 20100008) },
-            { 0x38C7A1AF, new MissionInfo("BH Mission: First Tagging Mission", 20150009) },
-            { 0x4FC09139, new MissionInfo("BH Mission: Second Tagging Mission", 20150010) },
-            { 0xD1A4049A, new MissionInfo("BH Mission: Third Tagging Mission", 20150011) },
-            { 0xA6A3340C, new MissionInfo("BH Mission: Fourth Tagging Mission", 20150012) },
-            { 0x3FAA65B6, new MissionInfo("BH Mission: Fifth Tagging Mission", 20150013) },
+            { 0x38C7A1AF, new MissionInfo("BH Mission: First Tagging Mission", 20150009, true, 0x55a313) },
+            { 0x4FC09139, new MissionInfo("BH Mission: Second Tagging Mission", 20150010, true, 0x55a368) },
+            { 0xD1A4049A, new MissionInfo("BH Mission: Third Tagging Mission", 20150011, true, 0x55a3fe) },
+            { 0xA6A3340C, new MissionInfo("BH Mission: Fourth Tagging Mission", 20150012, true, 0x55a2a0) },
+            { 0x3FAA65B6, new MissionInfo("BH Mission: Fifth Tagging Mission", 20150013, true, 0x55a30c) },
             // Skate Ranch First Missions
             { 0x55C9D19C, new MissionInfo("SR Mission: Skitch Sanchez", 30100001) },
             { 0x313B473E, new MissionInfo("SR Mission: Learn the Bert Slide from Iggy", 30100002) },
             // Downtown Stage 1 Missions
-            { 0x567AD81C, new MissionInfo("DT Mission: First Tagging Mission", 40100001) },
-            { 0x217DE88A, new MissionInfo("DT Mission: Second Tagging Mission", 40100002) },
-            { 0xBF197D29, new MissionInfo("DT Mission: Third Tagging Mission", 40100003) },
-            { 0xC81E4DBF, new MissionInfo("DT Mission: Fourth Tagging Mission", 40100004) },
-            { 0x51171C05, new MissionInfo("DT Mission: Fifth Tagging Mission", 40100005) },
+            { 0x567AD81C, new MissionInfo("DT Mission: First Tagging Mission", 40100001, true, 0x55a288) },
+            { 0x217DE88A, new MissionInfo("DT Mission: Second Tagging Mission", 40100002, true, 0x55a3ff) },
+            { 0xBF197D29, new MissionInfo("DT Mission: Third Tagging Mission", 40100003, true, 0x55a369) },
+            { 0xC81E4DBF, new MissionInfo("DT Mission: Fourth Tagging Mission", 40100004, true, 0x55a30a) },
+            { 0x51171C05, new MissionInfo("DT Mission: Fifth Tagging Mission", 40100005, true, 0x55a29d) },
             // Hollywood Stage 2 Missions
             { 0xA42186DF, new MissionInfo("HW Mission: Buy the Dino Head", 11100001) },
             { 0x8F0CD51C, new MissionInfo("HW Mission: Help Mr. D get into Downtown", 11100002) },

@@ -70,6 +70,27 @@ namespace THAWAPClient.Models
         {
             if (MissionData.Missions.TryGetValue(scanresult, out var mission))
                 {   //debug Log.Logger.Warning("Mission Value Matched");
+                    
+                    if (mission.IsTricky == true)
+                    {
+                        Location newlocation = new Location()
+                        {
+                            Id = mission.ApId,
+                            Name = mission.Name,
+                            Address = mission.savedataaddress,
+                            CompareType = LocationCheckCompareType.Match,
+                            CheckValue = "1",
+                            CheckType = LocationCheckType.Byte,
+                            Category = "Missions"
+                        };
+
+                        App.Client.LocationManager.AddLocation(newlocation);
+                        //debug Log.Logger.Warning("New Mission Location Added, " + Name);
+                        DebugWriter.LogMissionDebug("New Mission Location Added, " + mission.Name.ToString());
+                    }
+
+                    else
+                    {
                     ulong currentmissionresultsaddress = baseaddress + 0x6c;
                     //Log.Logger.Information("current mission address is " + currentmissionresultsaddress.ToString("X"));
 
@@ -86,6 +107,7 @@ namespace THAWAPClient.Models
                     App.Client.LocationManager.AddLocation(newlocation);
                     //debug Log.Logger.Warning("New Mission Location Added, " + Name);
                     DebugWriter.LogMissionDebug("New Mission Location Added, " + mission.Name.ToString());
+                    }
                 }
             
         }

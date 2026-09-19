@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("THAWAPClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fbf88311d2326ac03144dc88b66f7f037edeb37d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af39323115be029dcd97bdd4c2b0ae37d3d7ec69")]
 [assembly: System.Reflection.AssemblyProductAttribute("THAWAPClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("THAWAPClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
